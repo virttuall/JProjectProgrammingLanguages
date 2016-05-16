@@ -1,9 +1,8 @@
-import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
-import org.antlr.runtime.ANTLRStringStream;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.ANTLRFileStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 
@@ -22,8 +21,12 @@ public static void main(String[] args) throws IOException {
     Java8Parser.CompilationUnitContext  compilationUnit= parser.compilationUnit();
     // Walk it and attach our listener
     ParseTreeWalker walker = new ParseTreeWalker();
-    ListenerJava listener = new ListenerJava();
+    ListenerJava listener = new ListenerJava(parser);
     walker.walk(listener, compilationUnit);
- 
+    List<Response> list = listener.responses;
+    for( final Response response : list )
+    {
+    	System.out.println(response.toString());
+    }
 }
 }
