@@ -61,4 +61,59 @@ public class UtilsF {
 		result += "assert "+nameBool+";";
 		return result;
 	}
+	
+	
+	//NUM10-J
+	public static boolean isBigDecimal(String cad)
+	{
+		if ( cad.startsWith("newBigDecimal") )
+		{
+			return true;
+		}
+		return false;
+	}
+	public static boolean isAGoodNewBigDecimal(String cad)
+	{
+		if ( cad.startsWith("newBigDecimal(\""))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static String getGoodBigDecimal(String cad)
+	{
+		String auxCad = cad.substring(14);
+		auxCad = auxCad.substring(0, auxCad.length()-1);
+		return "new BigDecimal(\""+auxCad+"\")";
+	}
+	
+	//NUM09-J
+	public static boolean isForWithFloat(String cad)
+	{
+		if ( cad.startsWith("for(float"))
+		{
+			return true;
+		}
+		return false;
+	}
+	public static boolean isFowWithDouble(String cad)
+	{
+		if ( cad.startsWith("for(double"))
+		{
+			return true;
+		}
+		return false;
+	}
+	public static String headerFor(String cad)
+	{
+		for( int i = 0; i<  cad.length(); i++ )
+		{
+			if ( cad.charAt(i) == '{')
+			{
+				return cad.substring(0, i);
+			}
+		}
+		return "Error in headerFor";
+	}
 }

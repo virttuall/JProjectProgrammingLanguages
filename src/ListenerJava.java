@@ -6,8 +6,6 @@ import java.util.TreeSet;
 
 import javax.naming.spi.DirStateFactory.Result;
 
-
-
 public class ListenerJava extends Java8BaseListener{
 	
 	Java8Parser parser;
@@ -106,5 +104,52 @@ public class ListenerJava extends Java8BaseListener{
 			responses.add(auxResponse);
 		}
 		//System.out.println(ctx.getText());
+	}
+	@Override
+	public void enterClassInstanceCreationExpression(Java8Parser.ClassInstanceCreationExpressionContext ctx) {
+		// TODO Auto-generated method stub
+		System.out.println("enterClassInstanceCreationExpression");
+		super.enterClassInstanceCreationExpression(ctx);
+	}
+	@Override
+	public void enterClassInstanceCreationExpression_lf_primary(Java8Parser.ClassInstanceCreationExpression_lf_primaryContext ctx) {
+		// TODO Auto-generated method stub
+		System.out.println("enterClassInstanceCreationExpression_lf_primary");
+		super.enterClassInstanceCreationExpression_lf_primary(ctx);
+	}
+	@Override
+	public void enterClassInstanceCreationExpression_lfno_primary(
+			Java8Parser.ClassInstanceCreationExpression_lfno_primaryContext ctx) {
+		System.out.println("enterClassInstanceCreationExpression_lfno_primary");
+		//System.out.println(ctx.getText());
+		String cad = ctx.getText();
+		if ( UtilsF.isBigDecimal(cad))
+		{
+			if ( !UtilsF.isAGoodNewBigDecimal(cad))
+			{
+				Response auxResponse = new Response(cad, UtilsF.getGoodBigDecimal(cad), "");
+				responses.add(auxResponse);
+			}
+		}
+		// TODO Auto-generated method stub
+		super.enterClassInstanceCreationExpression_lfno_primary(ctx);
+	}
+	@Override
+	public void enterBasicForStatement(Java8Parser.BasicForStatementContext ctx) {
+		// TODO Auto-generated method stub
+		System.out.println("enterBasicForStatement");
+		String cad = ctx.getText();
+		if ( UtilsF.isForWithFloat(cad))
+		{
+			//System.out.println(cad);
+			Response auxResponse = new Response(UtilsF.headerFor(cad), "You have a for with float", "");
+			responses.add(auxResponse);
+		}
+		else if ( UtilsF.isFowWithDouble(cad))
+		{
+			Response auxResponse = new Response(UtilsF.headerFor(cad), "You have a for with double", "");
+			responses.add(auxResponse);
+		}
+		super.enterBasicForStatement(ctx);
 	}
 }
