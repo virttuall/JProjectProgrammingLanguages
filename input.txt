@@ -1,14 +1,10 @@
 import java.util.*;
 
 public class Main {
-	
+	private ArrayList<String> names;
  
 	void process(int index) {
-		int a = 2;
-  		int[] arr1 = new int[20], arr3 = new int[20]; // Initialized to 0
-		int[] arr2 = new int[20]; // Initialized to 0
-		int[][] matrix1 = new int[20][20];
-		System.out.println(arr1.equals(arr2)); // Prints false
-		System.out.println(arr1.equals(arr3)); 
-	}
+ 	assert remove(null); // Side effect
+  // ...
+}
 }
