@@ -1,10 +1,8 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
-import javax.naming.spi.DirStateFactory.Result;
 
 
 
@@ -13,7 +11,7 @@ public class ListenerJava extends Java8BaseListener{
 	Java8Parser parser;
 	List<Response> responses;
 	Set<String> arraysName;
-	Set<String> collectionsName;
+	Set<Pair> collectionsName;
 	SymbolTable symbolTable;
 	boolean inAssert;
 	boolean badAssert;
@@ -23,7 +21,7 @@ public class ListenerJava extends Java8BaseListener{
 		this.parser = parser;
 		responses = new ArrayList<Response>();
 		arraysName = new TreeSet<String>();
-		collectionsName = new TreeSet<String>();
+		collectionsName = new HashSet<Pair>();
 		inAssert = false;
 		badAssert = false;
 		countBooleanForAssert = 0;
@@ -61,7 +59,7 @@ public class ListenerJava extends Java8BaseListener{
 		}
 		if ( UtilsF.isCollection(cad))
 		{
-			collectionsName.add(UtilsF.getNameCollection(cad));
+			collectionsName.add(new Pair(UtilsF.getNameCollection(cad), UtilsF.getTypeCollection(cad)));
 		}
 		super.enterVariableDeclarator(ctx);
 	}
@@ -187,9 +185,7 @@ public class ListenerJava extends Java8BaseListener{
 				}
 			}
 		}
-		System.out.println("--------------------------");
-		System.out.println(type + " , "+ name);
-		System.out.println("--------------------------");
+		symbolTable.add( new Variable(name, type));
 		super.enterLocalVariableDeclaration(ctx);
 	}
 }

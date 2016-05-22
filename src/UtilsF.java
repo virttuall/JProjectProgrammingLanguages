@@ -138,4 +138,10 @@ public class UtilsF {
 	{
 		return text.split("=")[0]; 
 	}
+	public static String getTypeCollection(String cad) {
+		// TODO Auto-generated method stub
+		int index = cad.indexOf("<");
+		String result = cad.substring(index+1);
+		return result.substring(0, result.indexOf(">"));
+	}
 }

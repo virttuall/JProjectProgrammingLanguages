@@ -1,19 +1,10 @@
-
 import java.util.*;
 
 public class Main 
 {
-	public int variable = 2;
 	
 	public static void main(String[] args) 
 	{
-		Integer a = new Integer();
-		int b = 2;
-		double c = 3.0;
-		float d = 2.1;
-		String e = "hola mundo";
-		char f = 'f';
-		ArrayList<Integer> list = new ArrayList<Integer>();
 		HashSet<Integer> set = new HashSet<Integer>();
 	}
 }
