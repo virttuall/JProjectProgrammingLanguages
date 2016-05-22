@@ -1,7 +1,12 @@
+import java.util.Arrays;
+import java.util.List;
 
 public class UtilsF {
 	
 	//for EXP02-J
+	static String arrCollection[] = new String[]
+	{ "HashSet", "TreeSet", "LinkedHashSet", "LinkedList", "ArrayList", "ArrayDeque", "HashMap", "TreeMap", "LinkedHashMap"};
+	static List<String> collectionN = Arrays.asList(arrCollection);
 	public static boolean isArray(String cad)
 	{
 		int count = 0;
@@ -115,5 +120,22 @@ public class UtilsF {
 			}
 		}
 		return "Error in headerFor";
+	}
+	//for EXP04-J
+	public static boolean isCollection(String text) {
+		// TODO Auto-generated method stub
+		String cads[] = text.split("=");
+		for( final String var: collectionN) 
+		{
+			if ( cads[1].startsWith("new"+var+"<"))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	public static String getNameCollection(String text)
+	{
+		return text.split("=")[0]; 
 	}
 }

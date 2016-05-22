@@ -6,11 +6,15 @@ import java.util.TreeSet;
 
 import javax.naming.spi.DirStateFactory.Result;
 
+
+
 public class ListenerJava extends Java8BaseListener{
 	
 	Java8Parser parser;
 	List<Response> responses;
 	Set<String> arraysName;
+	Set<String> collectionsName;
+	SymbolTable symbolTable;
 	boolean inAssert;
 	boolean badAssert;
 	int countBooleanForAssert;
@@ -19,9 +23,11 @@ public class ListenerJava extends Java8BaseListener{
 		this.parser = parser;
 		responses = new ArrayList<Response>();
 		arraysName = new TreeSet<String>();
+		collectionsName = new TreeSet<String>();
 		inAssert = false;
 		badAssert = false;
 		countBooleanForAssert = 0;
+		symbolTable = new SymbolTable();
 	}
 	@Override 
 	public void enterAssertStatement(Java8Parser.AssertStatementContext ctx) 
@@ -37,7 +43,7 @@ public class ListenerJava extends Java8BaseListener{
 		if ( badAssert )
 		{
 			System.out.println(ctx.getText());
-			Response auxResult = new Response(ctx.getText(), UtilsF.getGoodAssert(ctx.getText(), "AssertBool"+countBooleanForAssert++), "");
+			Response auxResult = new Response(ctx.getText(), UtilsF.getGoodAssert(ctx.getText(), "AssertBool"+countBooleanForAssert++), "", "EXP06-J", ctx.start.getLine());
 			responses.add(auxResult);
 			badAssert = false;
 		}
@@ -46,10 +52,16 @@ public class ListenerJava extends Java8BaseListener{
 	@Override
 	public void enterVariableDeclarator(Java8Parser.VariableDeclaratorContext ctx) {
 		// TODO Auto-generated method stub
-		//System.out.println(ctx.getText());
+		System.out.println("enterVariableDeclarator");
+		System.out.println(ctx.getText());
+		String cad = ctx.getText();
 		if ( UtilsF.isArray(ctx.getText()))
 		{
 			arraysName.add(UtilsF.nameOfArray(ctx.getText()));
+		}
+		if ( UtilsF.isCollection(cad))
+		{
+			collectionsName.add(UtilsF.getNameCollection(cad));
 		}
 		super.enterVariableDeclarator(ctx);
 	}
@@ -67,7 +79,7 @@ public class ListenerJava extends Java8BaseListener{
 					aux = cad1+".equals("+cad2+")";
 					if (ctx.getText().contains(aux))
 					{
-						Response auxResponse = new Response(aux, "java.util.Arrays.equals("+cad1+","+cad2+")", "");
+						Response auxResponse = new Response(aux, "java.util.Arrays.equals("+cad1+","+cad2+")", "", "EXP02-J", ctx.start.getLine());
 						responses.add(auxResponse);
 					}
 				}
@@ -94,13 +106,14 @@ public class ListenerJava extends Java8BaseListener{
 	@Override
 	public void enterEnhancedForStatement(Java8Parser.EnhancedForStatementContext ctx) {
 		// TODO Auto-generated method stub
+		System.out.println(ctx.start.getLine());
 		super.enterEnhancedForStatement(ctx);
 		String cad = ctx.getText();
 		String resp[];
 		if ( !UtilsF.doItHaveFinal(cad))
 		{
 			resp = UtilsF.getGoodAndBad(cad);
-			Response auxResponse = new Response(resp[1], resp[0], "");
+			Response auxResponse = new Response(resp[1], resp[0], "", "DCL02-J", ctx.start.getLine());
 			responses.add(auxResponse);
 		}
 		//System.out.println(ctx.getText());
@@ -121,35 +134,62 @@ public class ListenerJava extends Java8BaseListener{
 	public void enterClassInstanceCreationExpression_lfno_primary(
 			Java8Parser.ClassInstanceCreationExpression_lfno_primaryContext ctx) {
 		System.out.println("enterClassInstanceCreationExpression_lfno_primary");
-		//System.out.println(ctx.getText());
 		String cad = ctx.getText();
 		if ( UtilsF.isBigDecimal(cad))
 		{
 			if ( !UtilsF.isAGoodNewBigDecimal(cad))
 			{
-				Response auxResponse = new Response(cad, UtilsF.getGoodBigDecimal(cad), "");
+				Response auxResponse = new Response(cad, UtilsF.getGoodBigDecimal(cad), "", "NUM10-J", ctx.start.getLine());
 				responses.add(auxResponse);
 			}
 		}
+		
 		// TODO Auto-generated method stub
 		super.enterClassInstanceCreationExpression_lfno_primary(ctx);
 	}
 	@Override
 	public void enterBasicForStatement(Java8Parser.BasicForStatementContext ctx) {
+		
 		// TODO Auto-generated method stub
 		System.out.println("enterBasicForStatement");
 		String cad = ctx.getText();
 		if ( UtilsF.isForWithFloat(cad))
 		{
 			//System.out.println(cad);
-			Response auxResponse = new Response(UtilsF.headerFor(cad), "You have a for with float", "");
+			Response auxResponse = new Response(UtilsF.headerFor(cad), "You have a for with float", "","NUM09-J", ctx.start.getLine());
 			responses.add(auxResponse);
 		}
 		else if ( UtilsF.isFowWithDouble(cad))
 		{
-			Response auxResponse = new Response(UtilsF.headerFor(cad), "You have a for with double", "");
+			Response auxResponse = new Response(UtilsF.headerFor(cad), "You have a for with double", "", "NUM09-J", ctx.start.getLine());
 			responses.add(auxResponse);
 		}
 		super.enterBasicForStatement(ctx);
+	}
+	@Override
+	public void enterLocalVariableDeclaration(Java8Parser.LocalVariableDeclarationContext ctx) {
+		// TODO Auto-generated method stub
+		
+		System.out.println("enterLocalVariableDeclaration");
+		String cad = ctx.getText();
+		String type = ctx.start.getText();
+		String name = cad.split("=")[0].substring(type.length());
+		if ( name.startsWith("<"))
+		{
+			boolean flag = true;
+			while(flag)
+			{
+				name = name.substring(1);
+				if ( name.startsWith(">"))
+				{
+					name = name.substring(1);
+					flag = false;
+				}
+			}
+		}
+		System.out.println("--------------------------");
+		System.out.println(type + " , "+ name);
+		System.out.println("--------------------------");
+		super.enterLocalVariableDeclaration(ctx);
 	}
 }

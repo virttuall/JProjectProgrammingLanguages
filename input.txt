@@ -1,13 +1,19 @@
+
 import java.util.*;
 
 public class Main 
 {
-	private ArrayList<String> names;
-	void process(int index) 
+	public int variable = 2;
+	
+	public static void main(String[] args) 
 	{
-		for (double x = 0.1f; x <= 1.0f; x += 0.1f) 
-		{
-  			System.out.println(x);
-		}
+		Integer a = new Integer();
+		int b = 2;
+		double c = 3.0;
+		float d = 2.1;
+		String e = "hola mundo";
+		char f = 'f';
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		HashSet<Integer> set = new HashSet<Integer>();
 	}
 }
