@@ -6,6 +6,8 @@ public class UtilsF {
 	//for EXP02-J
 	static String arrCollection[] = new String[]
 	{ "HashSet", "TreeSet", "LinkedHashSet", "LinkedList", "ArrayList", "ArrayDeque", "HashMap", "TreeMap", "LinkedHashMap"};
+	static String primitiveType[] = new String[]{"int", "short", "long", "double", "float", "boolean"};
+	static String wrappedType[] = new String[]{"Integer", "Short", "Long", "Double", "Float", "Boolean"};
 	static List<String> collectionN = Arrays.asList(arrCollection);
 	public static boolean isArray(String cad)
 	{
@@ -127,10 +129,14 @@ public class UtilsF {
 		String cads[] = text.split("=");
 		for( final String var: collectionN) 
 		{
-			if ( cads[1].startsWith("new"+var+"<"))
+			try
 			{
-				return true;
+				if ( cads[1].startsWith("new"+var+"<"))
+				{
+					return true;
+				}
 			}
+			catch(Exception e){}
 		}
 		return false;
 	}
@@ -143,5 +149,15 @@ public class UtilsF {
 		int index = cad.indexOf("<");
 		String result = cad.substring(index+1);
 		return result.substring(0, result.indexOf(">"));
+	}
+	public static boolean isEqualType(String cad1, String cad2)
+	{
+		if (cad1.equals(cad2)) return true;
+		for( int i = 0; i < primitiveType.length; i++ )
+		{
+			if ( cad1.equals(primitiveType[i]) && cad2.equals(wrappedType[i])) return true;
+			if ( cad2.equals(primitiveType[i]) && cad1.equals(wrappedType[i])) return true;
+		}
+		return false;
 	}
 }

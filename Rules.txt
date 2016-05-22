@@ -19,5 +19,5 @@ https://www.securecoding.cert.org/confluence/display/java/NUM09-J.+Do+not+use+fl
 NUM10-J
 https://www.securecoding.cert.org/confluence/display/java/NUM10-J.+Do+not+construct+BigDecimal+objects+from+floating-point+literals
 
-OBJ09-J
-https://www.securecoding.cert.org/confluence/display/java/OBJ09-J.+Compare+classes+and+not+class+names
+
+

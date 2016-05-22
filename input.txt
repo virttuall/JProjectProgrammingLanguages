@@ -1,10 +1,11 @@
-import java.util.*;
-
-public class Main 
-{
-	
-	public static void main(String[] args) 
-	{
-		HashSet<Integer> set = new HashSet<Integer>();
+import java.util.HashSet;
+ 
+public class ShortSet {
+  public static void main(String[] args) {
+  	Integer auth;
+    if (auth.getClass().getName().equals(
+      "com.application.auth.DefaultAuthenticationHandler")) {
+   	// ...
 	}
+  }
 }

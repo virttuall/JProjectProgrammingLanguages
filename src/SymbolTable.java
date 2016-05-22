@@ -1,13 +1,19 @@
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class SymbolTable {
-	HashSet<Variable> variables;
+	HashMap<String, String> variables;
 	public SymbolTable()
 	{
-		variables = new HashSet<Variable>();
+		variables = new HashMap<String, String>();
 	}
 	public void add(Variable variable)
 	{
-		variables.add(variable);
+		variables.put(variable.name, variable.type);
+	}
+	public Variable search(String name)
+	{
+		String type = variables.get(name);
+		return new Variable(name, type);
 	}
 }
