@@ -14,6 +14,8 @@ public class ListenerJava extends Java8BaseListener{
 	SymbolTable symbolTable;
 	boolean inAssert;
 	boolean badAssert;
+	int inForEach;
+	String idForEach[];
 	int countBooleanForAssert;
 	String methodInCollections[] = new String[]{"remove", "get", "contains"};
 	
@@ -25,6 +27,9 @@ public class ListenerJava extends Java8BaseListener{
 		collectionsName = new HashSet<Pair>();
 		inAssert = false;
 		badAssert = false;
+		inForEach = 0;
+		idForEach = new String[20];
+		idForEach[inForEach] = "nothing";
 		countBooleanForAssert = 0;
 		symbolTable = new SymbolTable();
 	}
@@ -136,17 +141,43 @@ public class ListenerJava extends Java8BaseListener{
 	@Override
 	public void enterEnhancedForStatement(Java8Parser.EnhancedForStatementContext ctx) {
 		// TODO Auto-generated method stub
-		System.out.println(ctx.start.getLine());
+		inForEach++;
+		idForEach[inForEach] = "nothing";
+		
 		super.enterEnhancedForStatement(ctx);
+	}
+	@Override
+	public void exitEnhancedForStatement(Java8Parser.EnhancedForStatementContext ctx) {
+		// TODO Auto-generated method stub
 		String cad = ctx.getText();
 		String resp[];
 		if ( !UtilsF.doItHaveFinal(cad))
 		{
 			resp = UtilsF.getGoodAndBad(cad);
-			Response auxResponse = new Response(resp[1], resp[0], "", "DCL02-J", ctx.start.getLine());
+			String wrongCode = resp[1];
+			String goodCode = resp[0];
+			wrongCode = wrongCode.replace(idForEach[inForEach]+":", " "+idForEach[inForEach]+" : ");
+			goodCode = goodCode.replace(idForEach[inForEach]+":", " "+idForEach[inForEach]+" : ");
+			Response auxResponse = new Response( wrongCode, goodCode, "", "DCL02-J", ctx.start.getLine());
 			responses.add(auxResponse);
 		}
-		//System.out.println(ctx.getText());
+		idForEach[inForEach] = "nothing";
+		inForEach--;
+		
+		super.exitEnhancedForStatement(ctx);
+	}
+	@Override
+	public void enterVariableDeclaratorId(Java8Parser.VariableDeclaratorIdContext ctx) {
+		// TODO Auto-generated method stub
+		System.out.println("enterVariableDeclaratorId");
+		if ( idForEach[inForEach].equals("nothing") && inForEach > 0)
+		{
+			System.out.println("-----------------------------------------start");
+			System.out.println(ctx.getStart().getText());
+			System.out.println("-----------------------------------------finish");
+			idForEach[inForEach] = ctx.getStart().getText();
+		}
+		super.enterVariableDeclaratorId(ctx);
 	}
 	@Override
 	public void enterClassInstanceCreationExpression(Java8Parser.ClassInstanceCreationExpressionContext ctx) {

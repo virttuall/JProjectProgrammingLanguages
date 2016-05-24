@@ -6,8 +6,8 @@ public class UtilsF {
 	//for EXP02-J
 	static String arrCollection[] = new String[]
 	{ "HashSet", "TreeSet", "LinkedHashSet", "LinkedList", "ArrayList", "ArrayDeque", "HashMap", "TreeMap", "LinkedHashMap"};
-	static String primitiveType[] = new String[]{"int", "short", "long", "double", "float", "boolean"};
-	static String wrappedType[] = new String[]{"Integer", "Short", "Long", "Double", "Float", "Boolean"};
+	static String primitiveType[] = new String[]{"int", "short", "long", "double", "float", "boolean", "char"};
+	static String wrappedType[] = new String[]{"Integer", "Short", "Long", "Double", "Float", "Boolean", "Character"};
 	static List<String> collectionN = Arrays.asList(arrCollection);
 	public static boolean isArray(String cad)
 	{
@@ -52,7 +52,7 @@ public class UtilsF {
 			if ( c == 0)
 			{
 				bad = "for("+auxCad.substring(0, i+1);
-				good = "for(final"+auxCad.substring(0, i+1);
+				good = "for(final "+auxCad.substring(0, i+1);
 				break;
 			}
 		}
