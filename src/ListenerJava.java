@@ -53,7 +53,7 @@ public class ListenerJava extends Java8BaseListener{
 		if ( badAssert )
 		{
 			System.out.println(ctx.getText());
-			Response auxResult = new Response(ctx.getText(), UtilsF.getGoodAssert(ctx.getText(), "AssertBool"+countBooleanForAssert++), "", "EXP06-J", ctx.start.getLine());
+			Response auxResult = new Response("assert "+ctx.getText().substring(6), UtilsF.getGoodAssert(ctx.getText(), "assertBool"+countBooleanForAssert++), "", "EXP06-J", ctx.start.getLine());
 			responses.add(auxResult);
 			badAssert = false;
 		}
@@ -200,7 +200,7 @@ public class ListenerJava extends Java8BaseListener{
 		{
 			if ( !UtilsF.isAGoodNewBigDecimal(cad))
 			{
-				Response auxResponse = new Response(cad, UtilsF.getGoodBigDecimal(cad), "", "NUM10-J", ctx.start.getLine());
+				Response auxResponse = new Response("new "+cad.substring(3), UtilsF.getGoodBigDecimal(cad), "", "NUM10-J", ctx.start.getLine());
 				responses.add(auxResponse);
 			}
 		}
